@@ -4,7 +4,13 @@ const OBJECTS_AMOUNT = 8;
 
 const PRICE_MIN = 1000;
 const PRICE_MAX = 100000;
-const TYPES = ['palace', 'flat', 'house', 'bungalo'];
+const TYPES = ['palace', 'flat', 'house', 'bungalow'];
+const TYPES_RUS = {
+  'flat': 'Квартира',
+  'bungalow': 'Бунгало',
+  'house': 'Дом',
+  'palace': 'Дворец'
+};
 const ROOMS_MIN = 1;
 const ROOMS_MAX = 4;
 const GUESTS_MIN = 1;
@@ -88,7 +94,7 @@ let pinTemplate = document.querySelector('#pin')
   .querySelector('.map__pin');
 
 
-//  функция создания DOM-элемента на основе JS-объекта (шаблон мага)
+//  функция создания DOM-элемента на основе JS-объекта (шаблон метки)
 let createPin = function (add) {
   let pin = pinTemplate.cloneNode(true);
 
@@ -109,3 +115,21 @@ for (let i = 0; i < OBJECTS_AMOUNT; i++) {
 }
 
 pins.appendChild(pinsfragment);
+
+let cardTemplate = document.querySelector('#card')
+  .content
+  .querySelector('.map__card');
+
+//  функция создания DOM-элемента на основе JS-объекта (шаблон карточки)
+let createCard = function (add) {
+  let card = cardTemplate.cloneNode(true);
+  card.querySelector('.popup__title').textContent = add.offer.title;
+  card.querySelector('.popup__text--address').textContent = add.offer.address;
+  card.querySelector('.popup__text--price').textContent = add.offer.price + '₽/ночь';
+  card.querySelector('.popup__type').textContent = TYPES_RUS[add.offer.type];
+  return card;
+}
+
+let filtersContainer = map.querySelector('.map__filters-container');
+
+filtersContainer.insertAdjacentElement('beforebegin', createCard(objects[0]));
