@@ -13,7 +13,6 @@ const CHECKIN = ['12:00', '13:00', '14:00'];
 const CHECKOUT = ['12:00', '13:00', '14:00'];
 const FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 const PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
-const MAP_WIDTH = 1200;
 const MAP_HEIGHT_MIN = 130;
 const MAP_HEIGHT_MAX = 630;
 const PIN_WIDTH = 50;
@@ -46,7 +45,7 @@ let getRandomObjects = (i) => {
     },
     'offer': {
       'title': 'Заголовок предложения',
-      'address': `${getRandomNumber(0, MAP_WIDTH)}, ${getRandomNumber(MAP_HEIGHT_MIN, MAP_HEIGHT_MAX)}`,
+      'address': `${getRandomNumber(0, map.offsetWidth)}, ${getRandomNumber(MAP_HEIGHT_MIN, MAP_HEIGHT_MAX)}`,
       'price': getRandomNumber(PRICE_MIN, PRICE_MAX),
       'type': TYPES[getRandomNumber(0, TYPES.length - 1)],
       'rooms': getRandomNumber(ROOMS_MIN, ROOMS_MAX),
@@ -58,7 +57,7 @@ let getRandomObjects = (i) => {
       'photos': getRandomArray(PHOTOS)
     },
     'location': {
-      'x': getRandomNumber(0, MAP_WIDTH),
+      'x': getRandomNumber(0, map.offsetWidth),
       'y': getRandomNumber(MAP_HEIGHT_MIN, MAP_HEIGHT_MAX)
     },
   };
@@ -80,7 +79,7 @@ let pinTemplate = document.querySelector('#pin')
 let createPin = (add) => {
   let pin = pinTemplate.cloneNode(true);
 
-  pin.style.left = `${add.location.x - PIN_WIDTH / 2}px`;
+  pin.style.left = `${add.location.x - (PIN_WIDTH / 2)}px`;
   pin.style.top = `${add.location.y - PIN_HEIGHT}px`;
 
   pin.querySelector('img').src = add.author.avatar;
