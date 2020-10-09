@@ -9,6 +9,18 @@ const ROOMS_MIN = 1;
 const ROOMS_MAX = 4;
 const GUESTS_MIN = 1;
 const GUESTS_MAX = 4;
+const GUESTS = {
+  'for 1 guest': '1',
+  'for 2 guests': '2',
+  'for 3 guests': '3',
+  'not for guests': '0'
+};
+const ROOMS = {
+  '1 room': '1',
+  '2 rooms': '2',
+  '3 rooms': '3',
+  '100 rooms': '100'
+};
 const CHECKIN = ['12:00', '13:00', '14:00'];
 const CHECKOUT = ['12:00', '13:00', '14:00'];
 const FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
@@ -18,12 +30,12 @@ const MAP_HEIGHT_MAX = 630;
 const PIN_WIDTH = 50;
 const PIN_HEIGHT = 70;
 
-let typesRus = {
+/* let typesRus = {
   flat: 'Квартира',
   bungalow: 'Бунгало',
   house: 'Дом',
   palace: 'Дворец'
-};
+}; */
 let objects = [];
 
 //  функция перемешивания чисел
@@ -64,11 +76,6 @@ let getRandomObjects = (i) => {
   return randomObject;
 };
 
-let map = document.querySelector('.map');
-let pins = document.querySelector('.map__pins');
-
-map.classList.remove('map--faded');
-
 //  шаблон метки
 let pinTemplate = document.querySelector('#pin')
   .content
@@ -88,16 +95,135 @@ let createPin = (add) => {
   return pin;
 };
 
-// цикл для вывода всех меток на карту
-let pinsfragment = document.createDocumentFragment();
-for (let i = 0; i < OBJECTS_AMOUNT; i++) {
-  objects.push(getRandomObjects(i));
-  pinsfragment.appendChild(createPin(objects[i]));
-}
-pins.appendChild(pinsfragment);
+//  функция добавляет атрибут disabled всем полям
+let addDisabledAttribute = (fields) => {
+  for (let i = 0; i < fields.length; i++) {
+    fields[i].setAttribute('disabled', 'disabled');
+  }
+};
 
+//  функция удаляет атрибут disabled всем полям
+let removeDisabledAttribute = (fields) => {
+  for (let i = 0; i < fields.length; i++) {
+    fields[i].removeAttribute('disabled');
+  }
+};
 
-//  шаблон карточки объекта
+let map = document.querySelector('.map');
+let pins = document.querySelector('.map__pins');
+let pinMain = document.querySelector('.map__pin--main');
+let form = document.querySelector('.ad-form');
+let fieldsets = document.querySelectorAll('fieldset');
+let adress = document.querySelector('#address');
+
+// функция добавляет координаты адреса в неактивном состоянии страницы
+let setDefaultAddress = () => {
+  let horizontalPosition = parseInt(pinMain.style.left, 10) + Math.round(pinMain.offsetWidth / 2);
+  let verticalPosition = parseInt(pinMain.style.top, 10) + Math.round(pinMain.offsetHeight / 2);
+
+  adress.value = `${horizontalPosition}, ${verticalPosition}`;
+};
+
+//  функция добавляет координаты адреса в активном состоянии страницы
+let setCustomAddress = () => {
+  let horizontalPosition = parseInt(pinMain.style.left, 10) + Math.round(PIN_WIDTH / 2);
+  let verticalPosition = parseInt(pinMain.style.top, 10) + PIN_HEIGHT;
+
+  adress.value = `${horizontalPosition}, ${verticalPosition}`;
+};
+
+//  функция для перехода в НЕАКТИВНОЕ состояние страницы
+let deactivatePage = () => {
+  map.classList.add('map--faded');
+  form.classList.add('ad-form--disabled');
+  addDisabledAttribute(fieldsets);
+  setDefaultAddress();
+};
+
+deactivatePage();
+
+// функция для перехода в АКТИВНОЕ состояние страницы
+let activatePage = () => {
+  map.classList.remove('map--faded');
+  form.classList.remove('ad-form--disabled');
+  removeDisabledAttribute(fieldsets);
+  setCustomAddress();
+
+  // цикл для вывода всех меток на карту и создание массива всех объектов
+  let pinsfragment = document.createDocumentFragment();
+  for (let i = 0; i < OBJECTS_AMOUNT; i++) {
+    objects.push(getRandomObjects(i));
+    pinsfragment.appendChild(createPin(objects[i]));
+  }
+  pins.appendChild(pinsfragment);
+
+  pinMain.removeEventListener('mouseup', activatePage);
+  pinMain.removeEventListener('keydown', activatePage);
+  room.addEventListener('change', validateRoomsGuests);
+  capacity.addEventListener('change', validateRoomsGuests);
+};
+
+// обработчик для активации страницы основной (левой) кнопкой мыши
+pinMain.addEventListener('mouseup', (evt) => {
+  if (evt.button === 0) {
+    activatePage();
+  }
+});
+
+// обработчик для активации страницы с клавиатуры клавишей enter
+pinMain.addEventListener('keydown', (evt) => {
+  if (evt.key === 'Enter') {
+    activatePage();
+  }
+});
+
+/* const GUESTS = {
+  'for 1 guest': '1',
+  'for 2 guests': '2',
+  'for 3 guests': '3',
+  'not for guests': '0'
+};
+const ROOMS = {
+  '1 room': '1',
+  '2 rooms': '2',
+  '3 rooms': '3',
+  '100 rooms': '100'
+}; */
+
+// проверка валидации формы
+let room = document.querySelector('#room_number');
+let capacity = document.querySelector('#capacity');
+
+let validateRoomsGuests = () => {
+  if (room.value === ROOMS['1 room']) {
+    if (capacity.value === GUESTS['for 2 guests'] || capacity.value === GUESTS['for 3 guests'] || capacity.value === GUESTS['not for guests']) {
+      capacity.setCustomValidity('для 1-го гостя только 1 комната');
+      room.setCustomValidity('для 1-го гостя только 1 комната');
+    }
+  } else if (room.value === ROOMS['2 rooms']) {
+    if (capacity.value === GUESTS['for 3 guests'] || capacity.value === GUESTS['not for guests']) {
+      capacity.setCustomValidity('для 1-го или 2-х гостей не больше 2-х комнат');
+      room.setCustomValidity('для 1-го или 2-х гостей не больше 2-х комнат');
+    }
+  } else if (room.value === ROOMS['3 rooms']) {
+    if (capacity.value === GUESTS['not for guests']) {
+      capacity.setCustomValidity('для 1-го или 2-х или 3-х гостей не больше 3-х комнат');
+      room.setCustomValidity('для 1-го или 2-х или 3-х гостей не больше 3-х комнат');
+    }
+  } else if (room.value === ROOMS['100 rooms']) {
+    if (capacity.value !== GUESTS['not for guests']) {
+      capacity.setCustomValidity('100 комнат не для гостей');
+      room.setCustomValidity('100 комнат не для гостей');
+    }
+  } else {
+    capacity.setCustomValidity('');
+    room.setCustomValidity('');
+  }
+};
+
+// доверяй, но проверяй (часть 1) ВРЕМЕННЫЕ КОММЕНТЫ КОДА
+
+/* //  шаблон карточки объекта
 let cardTemplate = document.querySelector('#card')
   .content
   .querySelector('.map__card');
@@ -150,4 +276,4 @@ let createCard = (obj) => {
 let filtersContainer = map.querySelector('.map__filters-container');
 
 //  отображение карточки первого объявления из массива с данными
-filtersContainer.insertAdjacentElement('beforebegin', createCard((objects[0])));
+filtersContainer.insertAdjacentElement('beforebegin', createCard((objects[0]))); */
