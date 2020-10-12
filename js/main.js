@@ -31,11 +31,24 @@ const PIN_WIDTH = 50;
 const PIN_HEIGHT = 70;
 
 let typesRus = {
-  flat: 'Квартира',
-  bungalow: 'Бунгало',
-  house: 'Дом',
-  palace: 'Дворец'
+  flat: {
+    translate: 'Квартира',
+    minPrice: 1000
+  },
+  bungalow: {
+    translate: 'Бунгало',
+    minPrice: 0
+  },
+  house: {
+    translate: 'Дом',
+    minPrice: 5000
+  },
+  palace: {
+    translate: 'Дворец',
+    minPrice: 10000
+  }
 };
+
 let objects = [];
 
 //  функция перемешивания чисел
@@ -132,7 +145,7 @@ let createCard = (template, obj) => {
   card.querySelector('.popup__title').textContent = obj.offer.title;
   card.querySelector('.popup__text--address').textContent = obj.offer.address;
   card.querySelector('.popup__text--price').textContent = `${obj.offer.price}₽/ночь`;
-  card.querySelector('.popup__type').textContent = typesRus[obj.offer.type];
+  card.querySelector('.popup__type').textContent = typesRus[obj.offer.type].translate;
   card.querySelector('.popup__text--capacity').textContent = `${obj.offer.rooms} комнаты для ${obj.offer.guests} гостей`;
   card.querySelector('.popup__text--time').textContent = `Заезд после ${obj.offer.checkin}, выезд до ${obj.offer.checkout}`;
   card.querySelector('.popup__features').innerHTML = '';
@@ -227,7 +240,7 @@ let createPin = (add) => {
 
   //  pin.addEventListener('click', openPopup(add));
 
-  pin.addEventListener('click', function () {
+  pin.addEventListener('click', () => {
     openPopup(add);
   });
 
@@ -276,9 +289,6 @@ let activatePage = () => {
 
   pinMain.removeEventListener('mouseup', activatePage);
   pinMain.removeEventListener('keydown', activatePage);
-
-  room.addEventListener('change', validateRoomsGuests);
-  capacity.addEventListener('change', validateRoomsGuests);
 };
 
 /* const GUESTS = {
@@ -294,7 +304,7 @@ const ROOMS = {
   '100 rooms': '100'
 }; */
 
-// проверка валидации формы
+// Зависимость кол-ва гостей от кол-ва комнат
 let room = document.querySelector('#room_number');
 let capacity = document.querySelector('#capacity');
 
@@ -324,3 +334,38 @@ let validateRoomsGuests = () => {
     room.setCustomValidity('');
   }
 };
+
+room.addEventListener('change', validateRoomsGuests);
+capacity.addEventListener('change', validateRoomsGuests);
+
+// зависимость минимальной цена за ночь от типа жилья
+let typeOfHousing = form.querySelector('select[name="type"]');
+let priceOfHousing = form.querySelector('input[name="price"]');
+
+let validateMinPriceOfHousing = () => {
+  let type = typesRus[typeOfHousing.value];
+  priceOfHousing.placeholder = type.minPrice;
+  priceOfHousing.min = type.minPrice;
+};
+
+typeOfHousing.addEventListener('change', validateMinPriceOfHousing);
+
+// зависимость время выезда от времени заезда (и наоборот)
+let timeCheckIn = form.querySelector('select[name="timein"]');
+let timeCheckOut = form.querySelector('select[name="timeout"]');
+
+let changeCheckIn = (checkIn) => {
+  timeCheckIn.value = checkIn;
+};
+
+let changeCheckOut = (checkOut) => {
+  timeCheckOut.value = checkOut;
+};
+
+timeCheckIn.addEventListener(`change`, () => {
+  changeCheckOut(timeCheckIn.value);
+});
+
+timeCheckOut.addEventListener(`change`, () => {
+  changeCheckIn(timeCheckOut.value);
+});
