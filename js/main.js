@@ -305,27 +305,30 @@ const ROOMS = {
 }; */
 
 // Зависимость кол-ва гостей от кол-ва комнат
+
 let room = document.querySelector('#room_number');
 let capacity = document.querySelector('#capacity');
 
 let validateRoomsGuests = () => {
-  if (room.value === ROOMS['1 room']) {
-    if (capacity.value === GUESTS['for 2 guests'] || capacity.value === GUESTS['for 3 guests'] || capacity.value === GUESTS['not for guests']) {
+  let roomNumber = +room.value;
+  let capacityNumber = +capacity.value;
+  if (roomNumber === ROOMS['1 room']) {
+    if (capacityNumber === GUESTS['for 2 guests'] || capacityNumber === GUESTS['for 3 guests'] || capacityNumber === GUESTS['not for guests']) {
       capacity.setCustomValidity('для 1-го гостя только 1 комната');
       room.setCustomValidity('для 1-го гостя только 1 комната');
     }
-  } else if (room.value === ROOMS['2 rooms']) {
-    if (capacity.value === GUESTS['for 3 guests'] || capacity.value === GUESTS['not for guests']) {
+  } else if (roomNumber === ROOMS['2 rooms']) {
+    if (capacityNumber === GUESTS['for 3 guests'] || capacityNumber === GUESTS['not for guests']) {
       capacity.setCustomValidity('для 1-го или 2-х гостей не больше 2-х комнат');
       room.setCustomValidity('для 1-го или 2-х гостей не больше 2-х комнат');
     }
-  } else if (room.value === ROOMS['3 rooms']) {
-    if (capacity.value === GUESTS['not for guests']) {
+  } else if (roomNumber === ROOMS['3 rooms']) {
+    if (capacityNumber === GUESTS['not for guests']) {
       capacity.setCustomValidity('для 1-го или 2-х или 3-х гостей не больше 3-х комнат');
       room.setCustomValidity('для 1-го или 2-х или 3-х гостей не больше 3-х комнат');
     }
-  } else if (room.value === ROOMS['100 rooms']) {
-    if (capacity.value !== GUESTS['not for guests']) {
+  } else if (roomNumber === ROOMS['100 rooms']) {
+    if (capacityNumber !== GUESTS['not for guests']) {
       capacity.setCustomValidity('100 комнат не для гостей');
       room.setCustomValidity('100 комнат не для гостей');
     }
