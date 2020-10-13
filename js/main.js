@@ -9,18 +9,14 @@ const ROOMS_MIN = 1;
 const ROOMS_MAX = 4;
 const GUESTS_MIN = 1;
 const GUESTS_MAX = 4;
-const GUESTS = {
-  'for 1 guest': '1',
-  'for 2 guests': '2',
-  'for 3 guests': '3',
-  'not for guests': '0'
+
+const roomValidityMessage = {
+  1: `1 комната — «для 1 гостя»`,
+  2: `2 комнаты — «для 2 гостей» или «для 1 гостя»`,
+  3: `3 комнаты — «для 3 гостей», «для 2 гостей» или «для 1 гостя»`,
+  100: `100 комнат — «не для гостей»`
 };
-const ROOMS = {
-  '1 room': '1',
-  '2 rooms': '2',
-  '3 rooms': '3',
-  '100 rooms': '100'
-};
+
 const CHECKIN = ['12:00', '13:00', '14:00'];
 const CHECKOUT = ['12:00', '13:00', '14:00'];
 const FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
@@ -291,55 +287,33 @@ let activatePage = () => {
   pinMain.removeEventListener('keydown', activatePage);
 };
 
-/* const GUESTS = {
-  'for 1 guest': '1',
-  'for 2 guests': '2',
-  'for 3 guests': '3',
-  'not for guests': '0'
-};
-const ROOMS = {
-  '1 room': '1',
-  '2 rooms': '2',
-  '3 rooms': '3',
-  '100 rooms': '100'
-}; */
-
 // Зависимость кол-ва гостей от кол-ва комнат
-
 let room = document.querySelector('#room_number');
 let capacity = document.querySelector('#capacity');
 
 let validateRoomsGuests = () => {
   let roomNumber = +room.value;
   let capacityNumber = +capacity.value;
-  if (roomNumber === ROOMS['1 room']) {
-    if (capacityNumber === GUESTS['for 2 guests'] || capacityNumber === GUESTS['for 3 guests'] || capacityNumber === GUESTS['not for guests']) {
-      capacity.setCustomValidity('для 1-го гостя только 1 комната');
-      room.setCustomValidity('для 1-го гостя только 1 комната');
-    }
-  } else if (roomNumber === ROOMS['2 rooms']) {
-    if (capacityNumber === GUESTS['for 3 guests'] || capacityNumber === GUESTS['not for guests']) {
-      capacity.setCustomValidity('для 1-го или 2-х гостей не больше 2-х комнат');
-      room.setCustomValidity('для 1-го или 2-х гостей не больше 2-х комнат');
-    }
-  } else if (roomNumber === ROOMS['3 rooms']) {
-    if (capacityNumber === GUESTS['not for guests']) {
-      capacity.setCustomValidity('для 1-го или 2-х или 3-х гостей не больше 3-х комнат');
-      room.setCustomValidity('для 1-го или 2-х или 3-х гостей не больше 3-х комнат');
-    }
-  } else if (roomNumber === ROOMS['100 rooms']) {
-    if (capacityNumber !== GUESTS['not for guests']) {
-      capacity.setCustomValidity('100 комнат не для гостей');
-      room.setCustomValidity('100 комнат не для гостей');
-    }
+  let result = true;
+
+  if ((roomNumber === 100 && capacityNumber !== 0) || (roomNumber !== 100 && (capacityNumber < 1 || capacityNumber > roomNumber))) {
+    capacity.setCustomValidity(roomValidityMessage[roomNumber]);
+    result = false;
   } else {
-    capacity.setCustomValidity('');
-    room.setCustomValidity('');
+    capacity.setCustomValidity(``);
   }
+  capacity.reportValidity();
+
+  return result;
 };
 
 room.addEventListener('change', validateRoomsGuests);
 capacity.addEventListener('change', validateRoomsGuests);
+form.addEventListener('submit', (evt) => {
+  if (!validateRoomsGuests()) {
+    evt.preventDefault();
+  }
+});
 
 // зависимость минимальной цена за ночь от типа жилья
 let typeOfHousing = form.querySelector('select[name="type"]');
