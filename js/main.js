@@ -203,7 +203,7 @@ let closePopup = () => {
   popup.remove();
   popupClose.removeEventListener('click', closePopup);
   popupClose.removeEventListener('keydown', onPopupEnterPress);
-  popupClose.removeEventListener('keydown', onPopupEscPress);
+  document.removeEventListener('keydown', onPopupEscPress);
 };
 
 //  открытие попапа
