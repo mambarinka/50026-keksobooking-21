@@ -28,10 +28,34 @@
     return pin;
   };
 
+  let makeFragment = (createArray) => {
+    let pinsfragment = document.createDocumentFragment();
+    for (let j = 0; j < createArray.length; j++) {
+      let pinElement = createPin(createArray[j]);
+      pinsfragment.appendChild(pinElement);
+    }
+    return pinsfragment;
+  };
+
+  let showMapPins = () => {
+    let fragmentWithObjects = makeFragment(window.data.objects);
+    window.map.pins.appendChild(fragmentWithObjects);
+  };
+
+  let hideMapPins = () => {
+    let notMainPins = window.map.pins.querySelectorAll(`.map__pin:not(.map__pin--main)`);
+
+    notMainPins.forEach((pin) => {
+      pin.remove();
+    });
+  };
+
   window.pin = {
     PIN_WIDTH: PIN_WIDTH,
     PIN_HEIGHT: PIN_HEIGHT,
-    createPin: createPin
+    createPin: createPin,
+    showMapPins: showMapPins,
+    hideMapPins: hideMapPins
   };
 
 })();
