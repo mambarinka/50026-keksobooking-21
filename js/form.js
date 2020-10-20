@@ -2,7 +2,7 @@
 
 (() => {
   let form = document.querySelector('.ad-form');
-  let adress = document.querySelector('#address');
+  let address = document.querySelector('#address');
   let pinMain = document.querySelector('.map__pin--main');
 
   //  функция добавляет атрибут disabled всем полям
@@ -24,7 +24,7 @@
     let horizontalPosition = parseInt(pinMain.style.left, 10) + Math.round(pinMain.offsetWidth / 2);
     let verticalPosition = parseInt(pinMain.style.top, 10) + Math.round(pinMain.offsetHeight / 2);
 
-    adress.value = `${horizontalPosition}, ${verticalPosition}`;
+    address.value = `${horizontalPosition}, ${verticalPosition}`;
   };
 
   //  функция добавляет координаты адреса в активном состоянии страницы
@@ -32,7 +32,7 @@
     let horizontalPosition = parseInt(pinMain.style.left, 10) + Math.round(window.pin.PIN_WIDTH / 2);
     let verticalPosition = parseInt(pinMain.style.top, 10) + window.pin.PIN_HEIGHT;
 
-    adress.value = `${horizontalPosition}, ${verticalPosition}`;
+    address.value = `${horizontalPosition}, ${verticalPosition}`;
   };
 
   // Зависимость кол-ва гостей от кол-ва комнат
@@ -96,11 +96,11 @@
   });
 
   window.form = {
-    addDisabledAttribute: addDisabledAttribute,
-    removeDisabledAttribute: removeDisabledAttribute,
-    setDefaultAddress: setDefaultAddress,
-    setCustomAddress: setCustomAddress,
-    form: form,
-    pinMain: pinMain
+    addDisabledAttribute,
+    removeDisabledAttribute,
+    setDefaultAddress,
+    setCustomAddress,
+    form,
+    pinMain
   };
 })();

@@ -22,28 +22,30 @@
     //  pin.addEventListener('click', openPopup(add));
 
     pin.addEventListener('click', () => {
-      window.map.openPopup(add);
+      window.card.openPopup(add);
     });
 
     return pin;
   };
 
-  let makeFragment = (createArray) => {
+  let offers = window.mock.createArray();
+
+  let makeFragment = (elements) => {
     let pinsfragment = document.createDocumentFragment();
-    for (let j = 0; j < createArray.length; j++) {
-      let pinElement = createPin(createArray[j]);
+    for (let j = 0; j < elements.length; j++) {
+      let pinElement = createPin(elements[j]);
       pinsfragment.appendChild(pinElement);
     }
     return pinsfragment;
   };
 
   let showMapPins = () => {
-    let fragmentWithObjects = makeFragment(window.data.objects);
-    window.map.pins.appendChild(fragmentWithObjects);
+    let fragmentWithObjects = makeFragment(offers);
+    window.card.pinsContainer.appendChild(fragmentWithObjects);
   };
 
   let hideMapPins = () => {
-    let notMainPins = window.map.pins.querySelectorAll(`.map__pin:not(.map__pin--main)`);
+    let notMainPins = window.card.pinsContainer.querySelectorAll(`.map__pin:not(.map__pin--main)`);
 
     notMainPins.forEach((pin) => {
       pin.remove();
@@ -51,11 +53,12 @@
   };
 
   window.pin = {
-    PIN_WIDTH: PIN_WIDTH,
-    PIN_HEIGHT: PIN_HEIGHT,
-    createPin: createPin,
-    showMapPins: showMapPins,
-    hideMapPins: hideMapPins
+    PIN_WIDTH,
+    PIN_HEIGHT,
+    createPin,
+    showMapPins,
+    hideMapPins,
+    makeFragment
   };
 
 })();

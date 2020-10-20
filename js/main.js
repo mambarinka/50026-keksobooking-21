@@ -5,7 +5,7 @@
 
   //  функция для перехода в НЕАКТИВНОЕ состояние страницы
   let deactivatePage = () => {
-    window.data.map.classList.add('map--faded');
+    window.mock.map.classList.add('map--faded');
     window.form.form.classList.add('ad-form--disabled');
     window.form.addDisabledAttribute(fieldsets);
     window.form.setDefaultAddress();
@@ -34,9 +34,10 @@
 
   // функция для перехода в АКТИВНОЕ состояние страницы
   let activatePage = () => {
-    window.data.map.classList.remove('map--faded');
+    window.mock.map.classList.remove('map--faded');
     window.form.form.classList.remove('ad-form--disabled');
-    window.data.createArrayObjects();
+    // window.util.createArrayObjects();
+    window.mock.createArray();
     window.form.removeDisabledAttribute(fieldsets);
     window.form.setCustomAddress();
 
