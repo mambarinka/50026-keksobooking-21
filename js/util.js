@@ -4,7 +4,7 @@
   // let objects = [];
 
   //  функция перемешивания чисел
-  let getRandomNumber = (min, max) => {
+  const getRandomNumber = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   };
 
@@ -20,7 +20,7 @@
     let createArray = createArrayObjects(); */
 
   // создание массива объявлений
-  let createArrayObjects = (limit, getContent) => {
+  const createArrayObjects = (limit, getContent) => {
     let objects = [];
 
     for (let i = 0; i < limit; i++) {
