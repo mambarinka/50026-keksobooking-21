@@ -1,11 +1,11 @@
 'use strict';
 
 (() => {
-  let map = document.querySelector('.map');
+  const map = document.querySelector('.map');
 
   //  функция создания одного объекта из случайно сгенерированных массивов с данными
-  let getRandomObjects = (i) => {
-    let randomObject = {
+  const getRandomObjects = (i) => {
+    const randomObject = {
       'author': {
         'avatar': `img/avatars/user0${i + 1}.png`
       },
@@ -31,14 +31,13 @@
   };
 
   //  функция создания массива с карточками
-  let createArray = () => {
-    let elements = window.util.createArrayObjects(window.constants.OBJECTS_AMOUNT, getRandomObjects);
-    return elements;
-  };
+  //  let createArray = () => {
+  //  let elements = window.util.createArrayObjects(window.constants.OBJECTS_AMOUNT, getRandomObjects);
+  //  return elements;
+
 
   window.mock = {
     map,
-    getRandomObjects,
-    createArray
+    getRandomObjects
   };
 })();
