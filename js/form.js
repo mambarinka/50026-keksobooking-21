@@ -1,45 +1,27 @@
 'use strict';
 
 (() => {
-  let form = document.querySelector('.ad-form');
-  let address = document.querySelector('#address');
-  let pinMain = document.querySelector('.map__pin--main');
+  const form = document.querySelector('.ad-form');
 
   //  функция добавляет атрибут disabled всем полям
-  let addDisabledAttribute = (fields) => {
+  const addDisabledAttribute = (fields) => {
     for (let i = 0; i < fields.length; i++) {
       fields[i].setAttribute('disabled', 'disabled');
     }
   };
 
   //  функция удаляет атрибут disabled всем полям
-  let removeDisabledAttribute = (fields) => {
+  const removeDisabledAttribute = (fields) => {
     for (let i = 0; i < fields.length; i++) {
       fields[i].removeAttribute('disabled');
     }
   };
 
-  // функция добавляет координаты адреса в неактивном состоянии страницы
-  let setDefaultAddress = () => {
-    let horizontalPosition = parseInt(pinMain.style.left, 10) + Math.round(pinMain.offsetWidth / 2);
-    let verticalPosition = parseInt(pinMain.style.top, 10) + Math.round(pinMain.offsetHeight / 2);
-
-    address.value = `${horizontalPosition}, ${verticalPosition}`;
-  };
-
-  //  функция добавляет координаты адреса в активном состоянии страницы
-  let setCustomAddress = () => {
-    let horizontalPosition = parseInt(pinMain.style.left, 10) + Math.round(window.pin.PIN_WIDTH / 2);
-    let verticalPosition = parseInt(pinMain.style.top, 10) + window.pin.PIN_HEIGHT;
-
-    address.value = `${horizontalPosition}, ${verticalPosition}`;
-  };
-
   // Зависимость кол-ва гостей от кол-ва комнат
-  let room = document.querySelector('#room_number');
-  let capacity = document.querySelector('#capacity');
+  const room = document.querySelector('#room_number');
+  const capacity = document.querySelector('#capacity');
 
-  let validateRoomsGuests = () => {
+  const validateRoomsGuests = () => {
     let roomNumber = +room.value;
     let capacityNumber = +capacity.value;
     let result = true;
@@ -64,11 +46,11 @@
   });
 
   // зависимость минимальной цена за ночь от типа жилья
-  let typeOfHousing = form.querySelector('select[name="type"]');
-  let priceOfHousing = form.querySelector('input[name="price"]');
+  const typeOfHousing = form.querySelector('select[name="type"]');
+  const priceOfHousing = form.querySelector('input[name="price"]');
 
-  let validateMinPriceOfHousing = () => {
-    let type = window.data.typesRus[typeOfHousing.value];
+  const validateMinPriceOfHousing = () => {
+    const type = window.data.typesRus[typeOfHousing.value];
     priceOfHousing.placeholder = type.minPrice;
     priceOfHousing.min = type.minPrice;
   };
@@ -76,14 +58,14 @@
   typeOfHousing.addEventListener('change', validateMinPriceOfHousing);
 
   // зависимость время выезда от времени заезда (и наоборот)
-  let timeCheckIn = form.querySelector('select[name="timein"]');
-  let timeCheckOut = form.querySelector('select[name="timeout"]');
+  const timeCheckIn = form.querySelector('select[name="timein"]');
+  const timeCheckOut = form.querySelector('select[name="timeout"]');
 
-  let changeCheckIn = (checkIn) => {
+  const changeCheckIn = (checkIn) => {
     timeCheckIn.value = checkIn;
   };
 
-  let changeCheckOut = (checkOut) => {
+  const changeCheckOut = (checkOut) => {
     timeCheckOut.value = checkOut;
   };
 
@@ -98,9 +80,6 @@
   window.form = {
     addDisabledAttribute,
     removeDisabledAttribute,
-    setDefaultAddress,
-    setCustomAddress,
-    form,
-    pinMain
+    form
   };
 })();
