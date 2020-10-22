@@ -50,8 +50,8 @@
         pinMain.style.top = (pinMain.offsetTop - shift.y) + 'px';
 
         newCoordsCustom = {
-          x: coordsCustom.x + (pinMain.offsetLeft - shift.x),
-          y: coordsCustom.y + (pinMain.offsetTop - shift.y)
+          x: pinMain.offsetLeft - shift.x,
+          y: pinMain.offsetTop - shift.y
         };
 
         setAddress(newCoordsCustom);
