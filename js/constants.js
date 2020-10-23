@@ -13,6 +13,8 @@
   const MAP_HEIGHT_MIN = 130;
   const MAP_HEIGHT_MAX = 630;
 
+  const PIN_MAIN_CURSOR_HEIGHT = 22;
+
   window.constants = {
     OBJECTS_AMOUNT,
     PRICE_MIN,
@@ -22,6 +24,7 @@
     GUESTS_MIN,
     GUESTS_MAX,
     MAP_HEIGHT_MIN,
-    MAP_HEIGHT_MAX
+    MAP_HEIGHT_MAX,
+    PIN_MAIN_CURSOR_HEIGHT
   };
 })();

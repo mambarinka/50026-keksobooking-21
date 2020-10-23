@@ -14,7 +14,7 @@
     100: `100 комнат — «не для гостей»`
   };
 
-  let typesRus = {
+  const typesRus = {
     flat: {
       translate: 'Квартира',
       minPrice: 1000

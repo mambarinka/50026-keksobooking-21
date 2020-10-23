@@ -2,55 +2,56 @@
 
 (() => {
   //  шаблон карточки объекта
-  let cardTemplate = document.querySelector('#card')
+  const cardTemplate = document.querySelector('#card')
     .content
     .querySelector('.map__card');
 
   //  функция создания DOM-элемента на основе шаблона карточки объекта
-  let createCard = (obj) => {
+  const createCard = (object) => {
     let card = cardTemplate.cloneNode(true);
-    card.querySelector('.popup__title').textContent = obj.offer.title;
-    card.querySelector('.popup__text--address').textContent = obj.offer.address;
-    card.querySelector('.popup__text--price').textContent = `${obj.offer.price}₽/ночь`;
-    card.querySelector('.popup__type').textContent = window.data.typesRus[obj.offer.type].translate;
-    card.querySelector('.popup__text--capacity').textContent = `${obj.offer.rooms} комнаты для ${obj.offer.guests} гостей`;
-    card.querySelector('.popup__text--time').textContent = `Заезд после ${obj.offer.checkin}, выезд до ${obj.offer.checkout}`;
+    card.querySelector('.popup__title').textContent = object.offer.title;
+    card.querySelector('.popup__text--address').textContent = object.offer.address;
+    card.querySelector('.popup__text--price').textContent = `${object.offer.price}₽/ночь`;
+    card.querySelector('.popup__type').textContent = window.data.typesRus[object.offer.type].translate;
+    card.querySelector('.popup__text--capacity').textContent = `${object.offer.rooms} комнаты для ${object.offer.guests} гостей`;
+    card.querySelector('.popup__text--time').textContent = `Заезд после ${object.offer.checkin}, выезд до ${object.offer.checkout}`;
     card.querySelector('.popup__features').innerHTML = '';
-    card.querySelector('.popup__description').textContent = obj.offer.description;
+    card.querySelector('.popup__description').textContent = object.offer.description;
     card.querySelector('.popup__photos').innerHTML = '';
-    card.querySelector('.popup__avatar').src = obj.author.avatar;
+    card.querySelector('.popup__avatar').src = object.author.avatar;
 
-    setFeatures(card, obj);
-    setPhotos(card, obj);
+    setFeatures(card, object);
+    setPhotos(card, object);
 
     return card;
   };
 
-  let setFeatures = (template, ob) => {
-    for (let j = 0; j < ob.offer.features.length; j++) {
-      if (ob.offer.features.length) {
-        let featureItem = document.createElement('li');
-        featureItem.classList.add('popup__feature', `popup__feature--${ob.offer.features[j]}`);
+  const setFeatures = (template, object) => {
+    if (object.offer.features.length) {
+      for (let j = 0; j < object.offer.features.length; j++) {
+        const featureItem = document.createElement('li');
+        featureItem.classList.add('popup__feature', `popup__feature--${object.offer.features[j]}`);
         template.querySelector('.popup__features').append(featureItem);
-      } else {
-        template.querySelector('.popup__features').style = 'display: none';
       }
+    } else {
+      template.querySelector('.popup__features').style = 'display: none';
     }
   };
 
-  let setPhotos = (template, ob) => {
-    for (let j = 0; j < ob.offer.photos.length; j++) {
-      if (ob.offer.photos.length) {
+
+  const setPhotos = (template, object) => {
+    if (object.offer.photos.length) {
+      for (let j = 0; j < object.offer.photos.length; j++) {
         let popupPhoto = document.createElement('img');
-        popupPhoto.src = ob.offer.photos[j];
+        popupPhoto.src = object.offer.photos[j];
         popupPhoto.classList.add('popup__photo');
         popupPhoto.width = 45;
         popupPhoto.height = 40;
         popupPhoto.alt = "Фотография жилья";
         template.querySelector('.popup__photos').append(popupPhoto);
-      } else {
-        template.querySelector('.popup__photos').style = 'display: none';
       }
+    } else {
+      template.querySelector('.popup__photos').style = 'display: none';
     }
   };
 
@@ -58,33 +59,33 @@
   let popupClose;
   let pinsContainer = document.querySelector('.map__pins');
 
-  //  закрытие попапа
-  let closePopup = () => {
-    popup.remove();
-    popupClose.removeEventListener('click', closePopup);
-    popupClose.removeEventListener('keydown', onPopupEnterPress);
-    document.removeEventListener('keydown', onPopupEscPress);
-  };
-
   //  открытие попапа
-  let openPopup = (ob) => {
+  const openPopup = (object) => {
     if (popup) {
       closePopup();
     }
-    popup = pinsContainer.insertAdjacentElement('afterend', createCard(ob));
+    popup = pinsContainer.insertAdjacentElement('afterend', createCard(object));
     popupClose = popup.querySelector('.popup__close');
     popupClose.addEventListener('click', closePopup);
     popupClose.addEventListener('keydown', onPopupEnterPress);
     document.addEventListener('keydown', onPopupEscPress);
   };
 
-  let onPopupEscPress = (evt) => {
+  //  закрытие попапа
+  const closePopup = () => {
+    popup.remove();
+    popupClose.removeEventListener('click', closePopup);
+    popupClose.removeEventListener('keydown', onPopupEnterPress);
+    document.removeEventListener('keydown', onPopupEscPress);
+  };
+
+  const onPopupEscPress = (evt) => {
     if (evt.key === 'Escape') {
       closePopup();
     }
   };
 
-  let onPopupEnterPress = (evt) => {
+  const onPopupEnterPress = (evt) => {
     if (evt.key === 'Enter') {
       closePopup();
     }
