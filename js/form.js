@@ -1,25 +1,25 @@
 'use strict';
 
 (() => {
-  const form = document.querySelector('.ad-form');
+  const form = document.querySelector(`.ad-form`);
 
   //  функция добавляет атрибут disabled всем полям
   const addDisabledAttribute = (fields) => {
     for (let i = 0; i < fields.length; i++) {
-      fields[i].setAttribute('disabled', 'disabled');
+      fields[i].setAttribute(`disabled`, `disabled`);
     }
   };
 
   //  функция удаляет атрибут disabled всем полям
   const removeDisabledAttribute = (fields) => {
     for (let i = 0; i < fields.length; i++) {
-      fields[i].removeAttribute('disabled');
+      fields[i].removeAttribute(`disabled`);
     }
   };
 
   // Зависимость кол-ва гостей от кол-ва комнат
-  const room = document.querySelector('#room_number');
-  const capacity = document.querySelector('#capacity');
+  const room = document.querySelector(`#room_number`);
+  const capacity = document.querySelector(`#capacity`);
 
   const validateRoomsGuests = () => {
     let roomNumber = +room.value;
@@ -37,17 +37,17 @@
     return result;
   };
 
-  room.addEventListener('change', validateRoomsGuests);
-  capacity.addEventListener('change', validateRoomsGuests);
-  form.addEventListener('submit', (evt) => {
+  room.addEventListener(`change`, validateRoomsGuests);
+  capacity.addEventListener(`change`, validateRoomsGuests);
+  form.addEventListener(`submit`, (evt) => {
     if (!validateRoomsGuests()) {
       evt.preventDefault();
     }
   });
 
   // зависимость минимальной цена за ночь от типа жилья
-  const typeOfHousing = form.querySelector('select[name="type"]');
-  const priceOfHousing = form.querySelector('input[name="price"]');
+  const typeOfHousing = form.querySelector(`select[name="type"]`);
+  const priceOfHousing = form.querySelector(`input[name="price"]`);
 
   const validateMinPriceOfHousing = () => {
     const type = window.data.typesRus[typeOfHousing.value];
@@ -55,11 +55,11 @@
     priceOfHousing.min = type.minPrice;
   };
 
-  typeOfHousing.addEventListener('change', validateMinPriceOfHousing);
+  typeOfHousing.addEventListener(`change`, validateMinPriceOfHousing);
 
   // зависимость время выезда от времени заезда (и наоборот)
-  const timeCheckIn = form.querySelector('select[name="timein"]');
-  const timeCheckOut = form.querySelector('select[name="timeout"]');
+  const timeCheckIn = form.querySelector(`select[name="timein"]`);
+  const timeCheckOut = form.querySelector(`select[name="timeout"]`);
 
   const changeCheckIn = (checkIn) => {
     timeCheckIn.value = checkIn;

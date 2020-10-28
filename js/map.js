@@ -1,24 +1,27 @@
 'use strict';
 
 (() => {
-
-  //  функция создания всех карточек объявлений
-  const getRandomCards = () => {
-    const randomCards = window.util.createArrayObjects(window.constants.OBJECTS_AMOUNT, window.mock.getRandomObjects);
-    return randomCards;
+  //  функция показа всех пинов, загруженных с сервера
+  const successAddPins = (offers) => {
+    let fragmentWithObjects = window.pin.makeFragment(offers);
+    window.pin.pinsContainer.appendChild(fragmentWithObjects);
   };
 
-  const cards = getRandomCards();
+  const errorAddPins = (errorMessage) => {
+    let node = document.createElement(`div`);
+    node.style = `z-index: 100; margin: 0 auto; text-align: center; background-color: red;`;
+    node.style.position = `absolute`;
+    node.style.left = 0;
+    node.style.right = 0;
+    node.style.fontSize = `30px`;
 
-  //  функция показа всех пинов, включая их карточки, по нажатию
-  const showMapPins = () => {
-    const fragmentWithObjects = window.pin.makeFragment(cards);
-    window.card.pinsContainer.appendChild(fragmentWithObjects);
+    node.textContent = errorMessage;
+    document.body.insertAdjacentElement(`afterbegin`, node);
   };
 
   //  функция скрытия всех пинов
   const hideMapPins = () => {
-    const notMainPins = window.card.pinsContainer.querySelectorAll(`.map__pin:not(.map__pin--main)`);
+    const notMainPins = window.pin.pinsContainer.querySelectorAll(`.map__pin:not(.map__pin--main)`);
 
     notMainPins.forEach((pin) => {
       pin.remove();
@@ -26,9 +29,8 @@
   };
 
   window.map = {
-    getRandomCards,
-    cards,
-    showMapPins,
+    successAddPins,
+    errorAddPins,
     hideMapPins
   };
 })();
