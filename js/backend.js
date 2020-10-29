@@ -58,7 +58,7 @@
     xhr.send(data); // чтобы отправить запрос
   };
 
-  const upload = function (data, onLoad, onError) {
+  const save = function (data, onLoad, onError) {
     request(Method.POST, data, URL_SAVE, onLoad, onError);
   };
 
@@ -67,7 +67,7 @@
   };
 
   window.backend = {
-    upload,
+    save,
     load
   };
 })();

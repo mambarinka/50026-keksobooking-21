@@ -19,7 +19,7 @@
   //  функция для перехода в НЕАКТИВНОЕ состояние страницы
   const deactivatePage = () => {
     window.pinMain.map.classList.add(`map--faded`);
-    window.form.form.classList.add(`ad-form--disabled`);
+    window.form.adForm.classList.add(`ad-form--disabled`);
     window.form.addDisabledAttribute(fieldsets);
     window.pinMain.setAddress(window.pinMain.coordsDefault);
     window.map.hideMapPins();
@@ -30,15 +30,10 @@
 
   deactivatePage();
 
-  const resetButton = document.querySelector(`.ad-form__reset`);
-  resetButton.addEventListener(`click`, () => {
-    deactivatePage();
-  });
-
   // функция для перехода в АКТИВНОЕ состояние страницы
   const activatePage = () => {
     window.pinMain.map.classList.remove(`map--faded`);
-    window.form.form.classList.remove(`ad-form--disabled`);
+    window.form.adForm.classList.remove(`ad-form--disabled`);
     window.form.removeDisabledAttribute(fieldsets);
     window.pinMain.setAddress(window.pinMain.coordsCustom);
     window.backend.load(window.map.successAddPins, window.map.errorAddPins);
@@ -47,4 +42,7 @@
     window.pinMain.pinMain.removeEventListener(`keydown`, onPinMainEnter);
   };
 
+  window.main = {
+    deactivatePage
+  };
 })();
