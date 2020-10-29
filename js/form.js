@@ -1,85 +1,77 @@
 'use strict';
 
 (() => {
-  const form = document.querySelector('.ad-form');
+  const adForm = document.querySelector(`.ad-form`);
+  const resetButton = document.querySelector(`.ad-form__reset`);
+
+  resetButton.addEventListener(`click`, () => {
+    window.main.deactivatePage();
+  });
 
   //  функция добавляет атрибут disabled всем полям
   const addDisabledAttribute = (fields) => {
     for (let i = 0; i < fields.length; i++) {
-      fields[i].setAttribute('disabled', 'disabled');
+      fields[i].setAttribute(`disabled`, `disabled`);
     }
   };
 
   //  функция удаляет атрибут disabled всем полям
   const removeDisabledAttribute = (fields) => {
     for (let i = 0; i < fields.length; i++) {
-      fields[i].removeAttribute('disabled');
+      fields[i].removeAttribute(`disabled`);
     }
   };
 
-  // Зависимость кол-ва гостей от кол-ва комнат
-  const room = document.querySelector('#room_number');
-  const capacity = document.querySelector('#capacity');
+  //  сообщения об успехе/ошибке отправки формы
+  const messageSuccessTmpl = document.querySelector(`#success`).content.querySelector(`.success`);
+  const messageSuccess = messageSuccessTmpl.cloneNode(true);
+  const messageErrorTmpl = document.querySelector(`#error`).content.querySelector(`.error`);
+  const messageError = messageErrorTmpl.cloneNode(true);
 
-  const validateRoomsGuests = () => {
-    let roomNumber = +room.value;
-    let capacityNumber = +capacity.value;
-    let result = true;
+  const addFormMessage = (message) => {
+    document.body.appendChild(message);
+    document.addEventListener(`click`, onDocumentClick);
+    document.addEventListener(`keydown`, onDocumentEscape);
+  };
 
-    if ((roomNumber === 100 && capacityNumber !== 0) || (roomNumber !== 100 && (capacityNumber < 1 || capacityNumber > roomNumber))) {
-      capacity.setCustomValidity(window.data.roomValidityMessage[roomNumber]);
-      result = false;
-    } else {
-      capacity.setCustomValidity(``);
+  const removeFormMessage = () => {
+    messageSuccess.remove();
+    messageError.remove();
+    document.removeEventListener(`click`, onDocumentClick);
+    document.removeEventListener(`keydown`, onDocumentEscape);
+  };
+
+  // Обработчик удаления сообщений по клику на документ
+  const onDocumentClick = (evt) => {
+    evt.preventDefault();
+    if (evt.button === 0) {
+      removeFormMessage();
     }
-    capacity.reportValidity();
-
-    return result;
   };
 
-  room.addEventListener('change', validateRoomsGuests);
-  capacity.addEventListener('change', validateRoomsGuests);
-  form.addEventListener('submit', (evt) => {
-    if (!validateRoomsGuests()) {
-      evt.preventDefault();
+  // Обработчик удаления сообщений по клику на Escape
+  const onDocumentEscape = (evt) => {
+    evt.preventDefault();
+    if (evt.key === `Escape`) {
+      removeFormMessage();
     }
-  });
-
-  // зависимость минимальной цена за ночь от типа жилья
-  const typeOfHousing = form.querySelector('select[name="type"]');
-  const priceOfHousing = form.querySelector('input[name="price"]');
-
-  const validateMinPriceOfHousing = () => {
-    const type = window.data.typesRus[typeOfHousing.value];
-    priceOfHousing.placeholder = type.minPrice;
-    priceOfHousing.min = type.minPrice;
   };
 
-  typeOfHousing.addEventListener('change', validateMinPriceOfHousing);
-
-  // зависимость время выезда от времени заезда (и наоборот)
-  const timeCheckIn = form.querySelector('select[name="timein"]');
-  const timeCheckOut = form.querySelector('select[name="timeout"]');
-
-  const changeCheckIn = (checkIn) => {
-    timeCheckIn.value = checkIn;
+  const onSubmitSendForm = (evt) => {
+    window.backend.save(new FormData(adForm), () => {
+      addFormMessage(messageSuccess);
+      window.main.deactivatePage();
+    }, () => {
+      addFormMessage(messageError);
+    });
+    evt.preventDefault();
   };
 
-  const changeCheckOut = (checkOut) => {
-    timeCheckOut.value = checkOut;
-  };
-
-  timeCheckIn.addEventListener(`change`, () => {
-    changeCheckOut(timeCheckIn.value);
-  });
-
-  timeCheckOut.addEventListener(`change`, () => {
-    changeCheckIn(timeCheckOut.value);
-  });
+  adForm.addEventListener(`submit`, onSubmitSendForm);
 
   window.form = {
     addDisabledAttribute,
     removeDisabledAttribute,
-    form
+    adForm
   };
 })();
