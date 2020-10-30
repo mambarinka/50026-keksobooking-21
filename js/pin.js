@@ -1,7 +1,7 @@
 'use strict';
 
 (() => {
-  let pinsContainer = document.querySelector(`.map__pins`);
+  const pinsContainer = document.querySelector(`.map__pins`);
   const PIN_WIDTH = 50;
   const PIN_HEIGHT = 70;
 

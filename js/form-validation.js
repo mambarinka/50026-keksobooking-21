@@ -32,14 +32,46 @@
   // зависимость минимальной цена за ночь от типа жилья
   const typeOfHousing = window.form.adForm.querySelector(`select[name="type"]`);
   const priceOfHousing = window.form.adForm.querySelector(`input[name="price"]`);
+  let result = true;
 
-  const validateMinPriceOfHousing = () => {
-    const type = window.data.typesRus[typeOfHousing.value];
-    priceOfHousing.placeholder = type.minPrice;
-    priceOfHousing.min = type.minPrice;
+
+  const validateMinPriceOfHousing = (evt) => {
+    console.log(evt);
+    if (evt) {
+      const price = evt.target.value;
+      const type = window.data.typesRus[typeOfHousing.value];
+      priceOfHousing.placeholder = type.minPrice;
+      priceOfHousing.min = type.minPrice;
+
+
+      console.log(price);
+      console.log(type.minPrice);
+      console.log(priceOfHousing.value < type.minPrice);
+      console.log(window.data.typesRus[typeOfHousing.value].error);
+
+      if (price <= type.minPrice) {
+        priceOfHousing.setCustomValidity(window.data.typesRus[typeOfHousing.value].error);
+        result = false;
+      } else {
+        priceOfHousing.setCustomValidity(``);
+        result = true;
+      }
+
+      priceOfHousing.reportValidity();
+
+      return result;
+    }
   };
 
-  typeOfHousing.addEventListener(`change`, validateMinPriceOfHousing);
+  //  validateMinPriceOfHousing(priceOfHousing.value);
+
+  priceOfHousing.addEventListener(`change`, validateMinPriceOfHousing);
+
+  window.form.adForm.addEventListener(`submit`, (evt) => {
+    if (!validateMinPriceOfHousing(evt)) {
+      evt.preventDefault();
+    }
+  });
 
   // зависимость время выезда от времени заезда (и наоборот)
   const timeCheckIn = window.form.adForm.querySelector(`select[name="timein"]`);
