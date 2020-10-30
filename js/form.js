@@ -64,7 +64,7 @@
     }, () => {
       addFormMessage(messageError);
     });
-  //  evt.preventDefault();
+    evt.preventDefault();
   };
 
   adForm.addEventListener(`submit`, onSubmitSendForm);

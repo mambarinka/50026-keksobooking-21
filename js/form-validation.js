@@ -36,34 +36,25 @@
 
 
   const validateMinPriceOfHousing = (evt) => {
-    console.log(evt);
     if (evt) {
       const price = evt.target.value;
       const type = window.data.typesRus[typeOfHousing.value];
       priceOfHousing.placeholder = type.minPrice;
       priceOfHousing.min = type.minPrice;
 
-
-      console.log(price);
-      console.log(type.minPrice);
-      console.log(priceOfHousing.value < type.minPrice);
-      console.log(window.data.typesRus[typeOfHousing.value].error);
-
-      if (price <= type.minPrice) {
+      if (price < type.minPrice) {
         priceOfHousing.setCustomValidity(window.data.typesRus[typeOfHousing.value].error);
         result = false;
       } else {
         priceOfHousing.setCustomValidity(``);
         result = true;
       }
-
       priceOfHousing.reportValidity();
-
-      return result;
     }
+    return result;
   };
 
-  //  validateMinPriceOfHousing(priceOfHousing.value);
+  // validateMinPriceOfHousing(priceOfHousing.value);
 
   priceOfHousing.addEventListener(`change`, validateMinPriceOfHousing);
 

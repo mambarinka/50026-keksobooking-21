@@ -25,7 +25,7 @@
 
   let newCoordsCustom;
 
-  pinMain.addEventListener(`mousedown`, (evt) => {
+  const onPinMainMouseMove = (evt) => {
     evt.preventDefault();
 
     let startCoords = {
@@ -46,8 +46,8 @@
         y: moveEvt.clientY
       };
 
-      if (pinMain.offsetLeft - shift.x >= 0 &&
-        pinMain.offsetLeft - shift.x + pinMain.offsetWidth <= map.offsetWidth &&
+      if (pinMain.offsetLeft - shift.x + pinMain.offsetWidth / 2 >= 0 &&
+        pinMain.offsetLeft - shift.x + pinMain.offsetWidth / 2 <= map.offsetWidth &&
         pinMain.offsetTop - shift.y + pinMain.offsetHeight >= MAP_HEIGHT_MIN &&
         pinMain.offsetTop - shift.y + pinMain.offsetHeight <= MAP_HEIGHT_MAX) {
 
@@ -55,12 +55,14 @@
         pinMain.style.top = (pinMain.offsetTop - shift.y) + `px`;
 
         newCoordsCustom = {
-          x: pinMain.offsetLeft - shift.x,
-          y: pinMain.offsetTop - shift.y
+          x: pinMain.offsetLeft + Math.round(pinMain.offsetWidth / 2) - shift.x,
+          y: pinMain.offsetTop + pinMain.offsetHeight - shift.y
         };
 
         setAddress(newCoordsCustom);
       }
+      shift.x = 0;
+      shift.y = 0;
     };
 
     let onMouseUp = function (upEvt) {
@@ -72,7 +74,9 @@
 
     document.addEventListener(`mousemove`, onMouseMove);
     document.addEventListener(`mouseup`, onMouseUp);
-  });
+  };
+
+  pinMain.addEventListener(`mousedown`, onPinMainMouseMove);
 
   window.pinMain = {
     map,
