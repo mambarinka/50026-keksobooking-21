@@ -11,19 +11,23 @@
   const typesRus = {
     flat: {
       translate: `Квартира`,
-      minPrice: 1000
+      minPrice: 1000,
+      error: `Стоимость должна быть не меньше 1000`
     },
     bungalow: {
       translate: `Бунгало`,
-      minPrice: 0
+      minPrice: 0,
+      error: `Стоимость должна быть не меньше 0`
     },
     house: {
       translate: `Дом`,
-      minPrice: 5000
+      minPrice: 5000,
+      error: `Стоимость должна быть не меньше 5000`
     },
     palace: {
       translate: `Дворец`,
-      minPrice: 10000
+      minPrice: 10000,
+      error: `Стоимость должна быть не меньше 10000`
     }
   };
 
