@@ -2,25 +2,30 @@
 
 (() => {
   const adForm = document.querySelector(`.ad-form`);
+  const adFormFieldsets = adForm.querySelectorAll(`fieldset`);
   const resetButton = document.querySelector(`.ad-form__reset`);
+
+  //  функция для деактивации формы
+  const deactivateAdForm = () => {
+    adForm.classList.add(`ad-form--disabled`);
+    adForm.reset();
+    window.forValidation.priceReset();
+    window.util.addDisabledAttribute(adForm, adFormFieldsets);
+    window.pinMain.setAddress(window.pinMain.coordsDefault);
+    adForm.removeEventListener(`submit`, onSubmitSendForm);
+  };
+
+  //  функция для активации формы
+  const activateAdForm = () => {
+    adForm.classList.remove(`ad-form--disabled`);
+    window.util.removeDisabledAttribute(adFormFieldsets);
+    window.pinMain.setAddress(window.pinMain.coordsCustom);
+    adForm.addEventListener(`submit`, onSubmitSendForm);
+  };
 
   resetButton.addEventListener(`click`, () => {
     window.main.deactivatePage();
   });
-
-  //  функция добавляет атрибут disabled всем полям
-  const addDisabledAttribute = (fields) => {
-    for (let i = 0; i < fields.length; i++) {
-      fields[i].setAttribute(`disabled`, `disabled`);
-    }
-  };
-
-  //  функция удаляет атрибут disabled всем полям
-  const removeDisabledAttribute = (fields) => {
-    for (let i = 0; i < fields.length; i++) {
-      fields[i].removeAttribute(`disabled`);
-    }
-  };
 
   //  сообщения об успехе/ошибке отправки формы
   const messageSuccessTmpl = document.querySelector(`#success`).content.querySelector(`.success`);
@@ -58,7 +63,7 @@
   };
 
   const onSubmitSendForm = (evt) => {
-    window.backend.save(new FormData(adForm), () => {
+    window.backend.upload(new FormData(adForm), () => {
       addFormMessage(messageSuccess);
       window.main.deactivatePage();
     }, () => {
@@ -67,11 +72,9 @@
     evt.preventDefault();
   };
 
-  adForm.addEventListener(`submit`, onSubmitSendForm);
-
   window.form = {
-    addDisabledAttribute,
-    removeDisabledAttribute,
+    deactivateAdForm,
+    activateAdForm,
     adForm
   };
 })();

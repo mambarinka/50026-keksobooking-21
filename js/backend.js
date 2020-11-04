@@ -9,7 +9,7 @@
   };
   const TIMEOUT_IN_MS = 10000;
 
-  const URL_SAVE = `https://21.javascript.pages.academy/keksobooking`;
+  const URL_UPLOAD = `https://21.javascript.pages.academy/keksobooking`;
   const URL_LOAD = `https://21.javascript.pages.academy/keksobooking/data`;
 
   const Method = {
@@ -58,8 +58,8 @@
     xhr.send(data); // чтобы отправить запрос
   };
 
-  const save = function (data, onLoad, onError) {
-    request(Method.POST, data, URL_SAVE, onLoad, onError);
+  const upload = function (data, onLoad, onError) {
+    request(Method.POST, data, URL_UPLOAD, onLoad, onError);
   };
 
   const load = (onLoad, onError) => {
@@ -67,7 +67,7 @@
   };
 
   window.backend = {
-    save,
+    upload,
     load
   };
 })();

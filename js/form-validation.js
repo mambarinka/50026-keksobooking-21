@@ -54,8 +54,15 @@
     return result;
   };
 
+  const priceReset = () => {
+    const type = window.data.typesRus.flat;
+    priceOfHousing.placeholder = type.minPrice;
+    priceOfHousing.min = type.minPrice;
+  };
+
   // validateMinPriceOfHousing(priceOfHousing.value);
 
+  typeOfHousing.addEventListener(`change`, validateMinPriceOfHousing);
   priceOfHousing.addEventListener(`change`, validateMinPriceOfHousing);
 
   window.form.adForm.addEventListener(`submit`, (evt) => {
@@ -83,4 +90,8 @@
   timeCheckOut.addEventListener(`change`, () => {
     changeCheckIn(timeCheckOut.value);
   });
+
+  window.forValidation = {
+    priceReset
+  };
 })();

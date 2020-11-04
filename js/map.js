@@ -1,36 +1,38 @@
 'use strict';
 
 (() => {
-  //  функция показа всех пинов, загруженных с сервера
-  const successAddPins = (offers) => {
-    let fragmentWithObjects = window.pin.makeFragment(offers);
-    window.pin.pinsContainer.appendChild(fragmentWithObjects);
+  // функция-обработчик для активации страницы основной (левой) кнопкой мыши
+  const onPinMainMouse = (evt) => {
+    if (evt.button === 0) {
+      window.main.activatePage();
+    }
   };
 
-  const errorAddPins = (errorMessage) => {
-    let node = document.createElement(`div`);
-    node.style = `z-index: 100; margin: 0 auto; text-align: center; background-color: red;`;
-    node.style.position = `absolute`;
-    node.style.left = 0;
-    node.style.right = 0;
-    node.style.fontSize = `30px`;
-
-    node.textContent = errorMessage;
-    document.body.insertAdjacentElement(`afterbegin`, node);
+  //  функция-обработчик для активации страницы с клавиатуры клавишей enter
+  const onPinMainEnter = (evt) => {
+    if (evt.key === `Enter`) {
+      window.main.activatePage();
+    }
   };
 
-  //  функция скрытия всех пинов
-  const hideMapPins = () => {
-    const notMainPins = window.pin.pinsContainer.querySelectorAll(`.map__pin:not(.map__pin--main)`);
+  //  функция для деактивации карты
+  const deactivateMap = () => {
+    window.pinMain.pinMain.addEventListener(`mousedown`, onPinMainMouse);
+    window.pinMain.pinMain.addEventListener(`keydown`, onPinMainEnter);
+    window.pinMain.getMainPinDefault();
+    window.pins.hideMapPins();
+    window.cardPopup.deletePopup();
+  };
 
-    notMainPins.forEach((pin) => {
-      pin.remove();
-    });
+  //  функция для активации карты
+  const activateMap = () => {
+    window.pinMain.pinMain.removeEventListener(`mousedown`, onPinMainMouse);
+    window.pinMain.pinMain.removeEventListener(`keydown`, onPinMainEnter);
+    window.backend.load(window.pins.onSuccessAddPins, window.pins.onErrorAddPins);
   };
 
   window.map = {
-    successAddPins,
-    errorAddPins,
-    hideMapPins
+    deactivateMap,
+    activateMap
   };
 })();

@@ -22,6 +22,7 @@
 
     pin.addEventListener(`click`, () => {
       window.cardPopup.openPopup(object);
+      addActiveClassPin(pin);
     });
 
     return pin;
@@ -37,12 +38,48 @@
     return pinsfragment;
   };
 
-  window.pin = {
+  window.objects = [];
+
+  //  функция показа всех пинов, загруженных с сервера
+  const onSuccessAddPins = (offers) => {
+    window.objects = offers;
+    let fragmentWithObjects = makeFragment(window.objects.slice(0, window.filters.MAX_NUMBER_PIN));
+    pinsContainer.appendChild(fragmentWithObjects);
+  };
+
+  const onErrorAddPins = (errorMessage) => {
+    window.util.createErrorMessage(errorMessage);
+  };
+
+  //  функция скрытия всех пинов
+  const hideMapPins = () => {
+    const notMainPins = pinsContainer.querySelectorAll(`.map__pin:not(.map__pin--main)`);
+
+    notMainPins.forEach((pin) => {
+      pin.remove();
+    });
+  };
+
+  const deleteActiveClassPin = () => {
+    const activePin = document.querySelector(`.map__pin--active`);
+    if (activePin) {
+      activePin.classList.remove(`map__pin--active`);
+    }
+  };
+
+  const addActiveClassPin = (pin) => {
+    deleteActiveClassPin();
+    pin.classList.add(`map__pin--active`);
+  };
+
+  window.pins = {
     pinsContainer,
     PIN_WIDTH,
     PIN_HEIGHT,
-    createPin,
-    makeFragment
+    onSuccessAddPins,
+    onErrorAddPins,
+    hideMapPins,
+    deleteActiveClassPin
   };
 
 })();
