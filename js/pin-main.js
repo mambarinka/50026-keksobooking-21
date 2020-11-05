@@ -7,6 +7,11 @@
   const PIN_MAIN_CURSOR_HEIGHT = 22;
   const MAP_HEIGHT_MIN = 130;
   const MAP_HEIGHT_MAX = 630;
+  const PIN_MAIN_DEFAULT = `left: 570px; top: 375px;`;
+
+  const getMainPinDefault = () => {
+    pinMain.style = PIN_MAIN_DEFAULT;
+  };
 
   const coordsDefault = {
     x: parseInt(pinMain.style.left, 10) + Math.round(pinMain.offsetWidth / 2),
@@ -65,7 +70,7 @@
       shift.y = 0;
     };
 
-    let onMouseUp = function (upEvt) {
+    let onMouseUp = (upEvt) => {
       upEvt.preventDefault();
 
       document.removeEventListener(`mousemove`, onMouseMove);
@@ -81,6 +86,7 @@
   window.pinMain = {
     map,
     pinMain,
+    getMainPinDefault,
     coordsDefault,
     coordsCustom,
     setAddress

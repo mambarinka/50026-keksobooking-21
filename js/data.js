@@ -31,8 +31,24 @@
     }
   };
 
+  const valuesFilterPrice = {
+    low: {
+      min: 0,
+      max: 10000
+    },
+    middle: {
+      min: 10000,
+      max: 50000
+    },
+    high: {
+      min: 50000,
+      max: Number.MAX_SAFE_INTEGER
+    }
+  };
+
   window.data = {
     roomValidityMessage,
-    typesRus
+    typesRus,
+    valuesFilterPrice
   };
 })();

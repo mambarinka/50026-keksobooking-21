@@ -15,9 +15,9 @@
     if (popup) {
       closePopup();
     }
-    popup = window.pin.pinsContainer.insertAdjacentElement(`afterend`, window.cardCreate.createCard(object));
+    popup = window.pins.pinsContainer.insertAdjacentElement(`afterend`, window.cardCreate.createCard(object));
     popupClose = popup.querySelector(`.popup__close`);
-    popupClose.addEventListener(`click`, closePopup);
+    popupClose.addEventListener(`click`, onPopupCloseEnter);
     popupClose.addEventListener(`keydown`, onPopupEnterPress);
     document.addEventListener(`keydown`, onPopupEscPress);
   };
@@ -25,7 +25,7 @@
   //  закрытие попапа (карточки объявления)
   const closePopup = () => {
     deletePopup();
-    popupClose.removeEventListener(`click`, closePopup);
+    popupClose.removeEventListener(`click`, onPopupCloseEnter);
     popupClose.removeEventListener(`keydown`, onPopupEnterPress);
     document.removeEventListener(`keydown`, onPopupEscPress);
   };
@@ -40,6 +40,10 @@
     if (evt.key === `Enter`) {
       closePopup();
     }
+  };
+
+  const onPopupCloseEnter = () => {
+    closePopup();
   };
 
   window.cardPopup = {
