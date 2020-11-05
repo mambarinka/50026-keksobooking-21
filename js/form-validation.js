@@ -1,97 +1,95 @@
 'use strict';
 
-(() => {
-  // Зависимость кол-ва гостей от кол-ва комнат
-  const room = document.querySelector(`#room_number`);
-  const capacity = document.querySelector(`#capacity`);
+// Зависимость кол-ва гостей от кол-ва комнат
+const room = document.querySelector(`#room_number`);
+const capacity = document.querySelector(`#capacity`);
 
-  const validateRoomsGuests = () => {
-    let roomNumber = +room.value;
-    let capacityNumber = +capacity.value;
-    let result = true;
-
-    if ((roomNumber === 100 && capacityNumber !== 0) || (roomNumber !== 100 && (capacityNumber < 1 || capacityNumber > roomNumber))) {
-      capacity.setCustomValidity(window.data.roomValidityMessage[roomNumber]);
-      result = false;
-    } else {
-      capacity.setCustomValidity(``);
-    }
-    capacity.reportValidity();
-
-    return result;
-  };
-
-  room.addEventListener(`change`, validateRoomsGuests);
-  capacity.addEventListener(`change`, validateRoomsGuests);
-  window.form.adForm.addEventListener(`submit`, (evt) => {
-    if (!validateRoomsGuests()) {
-      evt.preventDefault();
-    }
-  });
-
-  // зависимость минимальной цена за ночь от типа жилья
-  const typeOfHousing = window.form.adForm.querySelector(`select[name="type"]`);
-  const priceOfHousing = window.form.adForm.querySelector(`input[name="price"]`);
+const validateRoomsGuests = () => {
+  let roomNumber = +room.value;
+  let capacityNumber = +capacity.value;
   let result = true;
 
+  if ((roomNumber === 100 && capacityNumber !== 0) || (roomNumber !== 100 && (capacityNumber < 1 || capacityNumber > roomNumber))) {
+    capacity.setCustomValidity(window.data.roomValidityMessage[roomNumber]);
+    result = false;
+  } else {
+    capacity.setCustomValidity(``);
+  }
+  capacity.reportValidity();
 
-  const validateMinPriceOfHousing = (evt) => {
-    if (evt) {
-      const price = evt.target.value;
-      const type = window.data.typesRus[typeOfHousing.value];
-      priceOfHousing.placeholder = type.minPrice;
-      priceOfHousing.min = type.minPrice;
+  return result;
+};
 
-      if (price < type.minPrice) {
-        priceOfHousing.setCustomValidity(window.data.typesRus[typeOfHousing.value].error);
-        result = false;
-      } else {
-        priceOfHousing.setCustomValidity(``);
-        result = true;
-      }
-      priceOfHousing.reportValidity();
-    }
-    return result;
-  };
+room.addEventListener(`change`, validateRoomsGuests);
+capacity.addEventListener(`change`, validateRoomsGuests);
+window.form.adForm.addEventListener(`submit`, (evt) => {
+  if (!validateRoomsGuests()) {
+    evt.preventDefault();
+  }
+});
 
-  const priceReset = () => {
-    const type = window.data.typesRus.flat;
+// зависимость минимальной цена за ночь от типа жилья
+const typeOfHousing = window.form.adForm.querySelector(`select[name="type"]`);
+const priceOfHousing = window.form.adForm.querySelector(`input[name="price"]`);
+let result = true;
+
+
+const validateMinPriceOfHousing = (evt) => {
+  if (evt) {
+    const price = evt.target.value;
+    const type = window.data.typesRus[typeOfHousing.value];
     priceOfHousing.placeholder = type.minPrice;
     priceOfHousing.min = type.minPrice;
-  };
 
-  // validateMinPriceOfHousing(priceOfHousing.value);
-
-  typeOfHousing.addEventListener(`change`, validateMinPriceOfHousing);
-  priceOfHousing.addEventListener(`change`, validateMinPriceOfHousing);
-
-  window.form.adForm.addEventListener(`submit`, (evt) => {
-    if (!validateMinPriceOfHousing(evt)) {
-      evt.preventDefault();
+    if (price < type.minPrice) {
+      priceOfHousing.setCustomValidity(window.data.typesRus[typeOfHousing.value].error);
+      result = false;
+    } else {
+      priceOfHousing.setCustomValidity(``);
+      result = true;
     }
-  });
+    priceOfHousing.reportValidity();
+  }
+  return result;
+};
 
-  // зависимость время выезда от времени заезда (и наоборот)
-  const timeCheckIn = window.form.adForm.querySelector(`select[name="timein"]`);
-  const timeCheckOut = window.form.adForm.querySelector(`select[name="timeout"]`);
+const priceReset = () => {
+  const type = window.data.typesRus.flat;
+  priceOfHousing.placeholder = type.minPrice;
+  priceOfHousing.min = type.minPrice;
+};
 
-  const changeCheckIn = (checkIn) => {
-    timeCheckIn.value = checkIn;
-  };
+// validateMinPriceOfHousing(priceOfHousing.value);
 
-  const changeCheckOut = (checkOut) => {
-    timeCheckOut.value = checkOut;
-  };
+typeOfHousing.addEventListener(`change`, validateMinPriceOfHousing);
+priceOfHousing.addEventListener(`change`, validateMinPriceOfHousing);
 
-  timeCheckIn.addEventListener(`change`, () => {
-    changeCheckOut(timeCheckIn.value);
-  });
+window.form.adForm.addEventListener(`submit`, (evt) => {
+  if (!validateMinPriceOfHousing(evt)) {
+    evt.preventDefault();
+  }
+});
 
-  timeCheckOut.addEventListener(`change`, () => {
-    changeCheckIn(timeCheckOut.value);
-  });
+// зависимость время выезда от времени заезда (и наоборот)
+const timeCheckIn = window.form.adForm.querySelector(`select[name="timein"]`);
+const timeCheckOut = window.form.adForm.querySelector(`select[name="timeout"]`);
 
-  window.formValidation = {
-    priceReset
-  };
-})();
+const changeCheckIn = (checkIn) => {
+  timeCheckIn.value = checkIn;
+};
+
+const changeCheckOut = (checkOut) => {
+  timeCheckOut.value = checkOut;
+};
+
+timeCheckIn.addEventListener(`change`, () => {
+  changeCheckOut(timeCheckIn.value);
+});
+
+timeCheckOut.addEventListener(`change`, () => {
+  changeCheckIn(timeCheckOut.value);
+});
+
+window.formValidation = {
+  priceReset
+};
