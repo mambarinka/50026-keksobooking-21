@@ -5,7 +5,7 @@
   const MAX_NUMBER_PIN = 5;
 
   const filterForm = document.querySelector(`.map__filters`);
-  const filterFieldset = filterForm.querySelector(`fieldset`);
+  const filterInputs = filterForm.querySelectorAll(`input`);
   const filterSelect = filterForm.querySelectorAll(`select`);
   const filterHousingType = filterForm.querySelector(`#housing-type`);
   const filterPrice = filterForm.querySelector(`#housing-price`);
@@ -24,23 +24,23 @@
   };
 
   //  функция-обработчик по изменению фильтров
-  const onFilterChange = function () {
+  const onFilterChange = () => {
     window.cardPopup.deletePopup();
     window.pins.hideMapPins();
-    window.pins.onSuccessAddPins(getFilteredObjects(window.objects));
+    window.pins.addPins(getFilteredObjects(window.objects));
   };
 
   //  функция для деактивации полей фильтра
   const deactivateFilter = () => {
     resetFilter();
-    window.util.addDisabledAttribute(filterForm, filterFieldset);
+    window.util.addDisabledAttribute(filterForm, filterInputs);
     window.util.addDisabledAttribute(filterForm, filterSelect);
     filterForm.removeEventListener(`change`, window.debounce(onFilterChange));
   };
 
   //  функция для активации полей фильтра
   const activateFilter = () => {
-    window.util.removeDisabledAttribute(filterFieldset);
+    window.util.removeDisabledAttribute(filterInputs);
     window.util.removeDisabledAttribute(filterSelect);
     filterForm.addEventListener(`change`, window.debounce(onFilterChange));
   };
@@ -63,26 +63,27 @@
     return filteredObjects;
   };
 
-  // Функция выбора фильтров (типа жилья, комнат, гостей)
-  const checkfilterItem = function (it, item, key) {
-    return it.value === FILTER_VALUE_DEFAULT ? true : it.value === item[key].toString();
+  // функция выбора фильтров (типа жилья, комнат, гостей)
+  const checkfilterItem = (filter, object, key) => {
+    return filter.value === FILTER_VALUE_DEFAULT ? true : filter.value === object[key].toString();
   };
 
-  // Выбор диапазона цены
-  const checkPrice = function (ad) {
+  // функция по выбору диапазона цены
+  const checkPrice = (object) => {
     const priceRange = window.data.valuesFilterPrice[filterPrice.value];
-    return filterPrice.value === FILTER_VALUE_DEFAULT ? true : ad.offer.price > priceRange.min && ad.offer.price <= priceRange.max;
+    return filterPrice.value === FILTER_VALUE_DEFAULT ? true : object.offer.price > priceRange.min && object.offer.price <= priceRange.max;
   };
 
-  // Выбор удобств
-  const checkFeatures = function (ad) {
+  // функция по выбору удобств
+  const checkFeatures = (object) => {
     const checkedFeaturesItems = filterFeatures.querySelectorAll(`input:checked`);
-    return Array.from(checkedFeaturesItems).every(function (element) {
-      return ad.offer.features.includes(element.value);
+    return Array.from(checkedFeaturesItems).every((element) => {
+      return object.offer.features.includes(element.value);
     });
   };
 
   window.filters = {
+    MAX_NUMBER_PIN,
     deactivateFilter,
     activateFilter
   };

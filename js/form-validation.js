@@ -91,7 +91,7 @@
     changeCheckIn(timeCheckOut.value);
   });
 
-  window.forValidation = {
+  window.formValidation = {
     priceReset
   };
 })();

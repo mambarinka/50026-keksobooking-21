@@ -28,27 +28,27 @@
     return pin;
   };
 
-  //  функция создания всех меток с помощью группировки createDocumentFragment
-  const makeFragment = (elements) => {
+  //  функция создания всех меток с помощью группировки createDocumentFragment,
+  // загруженные с сервера
+  const addPins = (objects) => {
     let pinsfragment = document.createDocumentFragment();
-    for (let j = 0; j < elements.length; j++) {
-      const pinElement = createPin(elements[j]);
-      pinsfragment.appendChild(pinElement);
-    }
-    return pinsfragment;
+    objects.forEach((object) => {
+      pinsfragment.appendChild(createPin(object));
+    });
+    pinsContainer.appendChild(pinsfragment);
   };
 
   window.objects = [];
 
   //  функция показа всех пинов, загруженных с сервера
-  const onSuccessAddPins = (offers) => {
-    window.objects = offers;
-    let fragmentWithObjects = makeFragment(window.objects.slice(0, window.filters.MAX_NUMBER_PIN));
-    pinsContainer.appendChild(fragmentWithObjects);
+  const onSuccessAddPins = (pins) => {
+    window.objects = pins;
+    addPins(window.objects.slice(0, window.filters.MAX_NUMBER_PIN));
   };
 
   const onErrorAddPins = (errorMessage) => {
     window.util.createErrorMessage(errorMessage);
+    window.filters.deactivateFilter();
   };
 
   //  функция скрытия всех пинов
@@ -76,6 +76,7 @@
     pinsContainer,
     PIN_WIDTH,
     PIN_HEIGHT,
+    addPins,
     onSuccessAddPins,
     onErrorAddPins,
     hideMapPins,

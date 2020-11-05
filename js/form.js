@@ -9,7 +9,7 @@
   const deactivateAdForm = () => {
     adForm.classList.add(`ad-form--disabled`);
     adForm.reset();
-    window.forValidation.priceReset();
+    window.formValidation.priceReset();
     window.util.addDisabledAttribute(adForm, adFormFieldsets);
     window.pinMain.setAddress(window.pinMain.coordsDefault);
     adForm.removeEventListener(`submit`, onSubmitSendForm);

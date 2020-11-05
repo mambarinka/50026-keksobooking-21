@@ -70,7 +70,7 @@
       shift.y = 0;
     };
 
-    let onMouseUp = function (upEvt) {
+    let onMouseUp = (upEvt) => {
       upEvt.preventDefault();
 
       document.removeEventListener(`mousemove`, onMouseMove);

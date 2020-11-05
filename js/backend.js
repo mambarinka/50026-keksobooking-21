@@ -17,7 +17,7 @@
     POST: `POST`
   };
 
-  const request = function (method, data, url, onLoad, onError) {
+  const request = (method, data, url, onLoad, onError) => {
     const xhr = new XMLHttpRequest(); // чтобы сделать запрос на сервер
     xhr.responseType = `json`; // сервер вернёт данные в указанном формате
 
@@ -58,7 +58,7 @@
     xhr.send(data); // чтобы отправить запрос
   };
 
-  const upload = function (data, onLoad, onError) {
+  const upload = (data, onLoad, onError) => {
     request(Method.POST, data, URL_UPLOAD, onLoad, onError);
   };
 
