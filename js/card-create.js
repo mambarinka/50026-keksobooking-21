@@ -54,5 +54,5 @@ const getPhotos = (template, object) => {
 };
 
 window.cardCreate = {
-  createCard
+  render: createCard
 };

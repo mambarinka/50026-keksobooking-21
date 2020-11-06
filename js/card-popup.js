@@ -14,7 +14,7 @@ const openPopup = (object) => {
   if (popup) {
     closePopup();
   }
-  popup = window.pins.pinsContainer.insertAdjacentElement(`afterend`, window.cardCreate.createCard(object));
+  popup = window.pins.pinsContainer.insertAdjacentElement(`afterend`, window.cardCreate.render(object));
   popupClose = popup.querySelector(`.popup__close`);
   popupClose.addEventListener(`click`, onPopupCloseEnter);
   popupClose.addEventListener(`keydown`, onPopupEnterPress);
