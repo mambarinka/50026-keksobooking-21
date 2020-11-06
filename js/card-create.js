@@ -19,13 +19,13 @@ const createCard = (object) => {
   card.querySelector(`.popup__photos`).innerHTML = ``;
   card.querySelector(`.popup__avatar`).src = object.author.avatar;
 
-  setFeatures(card, object);
-  setPhotos(card, object);
+  getFeatures(card, object);
+  getPhotos(card, object);
 
   return card;
 };
 
-const setFeatures = (template, object) => {
+const getFeatures = (template, object) => {
   if (object.offer.features.length) {
     for (let i = 0; i < object.offer.features.length; i++) {
       const featureItem = document.createElement(`li`);
@@ -37,7 +37,7 @@ const setFeatures = (template, object) => {
   }
 };
 
-const setPhotos = (template, object) => {
+const getPhotos = (template, object) => {
   if (object.offer.photos.length) {
     for (let i = 0; i < object.offer.photos.length; i++) {
       let popupPhoto = document.createElement(`img`);
