@@ -5,16 +5,6 @@ const getRandomNumber = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
-// создание массива объявлений
-const createArrayObjects = (limit, getContent) => {
-  let objects = [];
-
-  for (let i = 0; i < limit; i++) {
-    objects[i] = getContent(i);
-  }
-  return objects;
-};
-
 const createErrorMessage = (message) => {
   let node = document.createElement(`div`);
   node.style = `z-index: 100; margin: 0 auto; text-align: center; background-color: red;`;
@@ -44,7 +34,6 @@ const removeDisabledAttribute = (fields) => {
 
 window.util = {
   getRandomNumber,
-  createArrayObjects,
   createErrorMessage,
   addDisabledAttribute,
   removeDisabledAttribute
