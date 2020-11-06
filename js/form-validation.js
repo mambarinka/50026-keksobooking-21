@@ -9,7 +9,10 @@ const validateRoomsGuests = () => {
   let capacityNumber = +capacity.value;
   let result = true;
 
-  if ((roomNumber === 100 && capacityNumber !== 0) || (roomNumber !== 100 && (capacityNumber < 1 || capacityNumber > roomNumber))) {
+  if ((roomNumber === 1 && capacityNumber !== 1) ||
+    (roomNumber === 2 && (capacityNumber > 2 || capacityNumber === 0)) ||
+    (roomNumber === 3 && capacityNumber < 1) ||
+    (roomNumber > 3 && capacityNumber !== 0)) {
     capacity.setCustomValidity(window.data.roomValidityMessage[roomNumber]);
     result = false;
   } else {
