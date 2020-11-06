@@ -27,9 +27,9 @@ const createCard = (object) => {
 
 const setFeatures = (template, object) => {
   if (object.offer.features.length) {
-    for (let j = 0; j < object.offer.features.length; j++) {
+    for (let i = 0; i < object.offer.features.length; i++) {
       const featureItem = document.createElement(`li`);
-      featureItem.classList.add(`popup__feature`, `popup__feature--${object.offer.features[j]}`);
+      featureItem.classList.add(`popup__feature`, `popup__feature--${object.offer.features[i]}`);
       template.querySelector(`.popup__features`).append(featureItem);
     }
   } else {
@@ -39,9 +39,9 @@ const setFeatures = (template, object) => {
 
 const setPhotos = (template, object) => {
   if (object.offer.photos.length) {
-    for (let j = 0; j < object.offer.photos.length; j++) {
+    for (let i = 0; i < object.offer.photos.length; i++) {
       let popupPhoto = document.createElement(`img`);
-      popupPhoto.src = object.offer.photos[j];
+      popupPhoto.src = object.offer.photos[i];
       popupPhoto.classList.add(`popup__photo`);
       popupPhoto.width = 45;
       popupPhoto.height = 40;
