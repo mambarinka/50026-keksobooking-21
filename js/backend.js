@@ -2,9 +2,9 @@
 
 const StatusCode = { // это ошибки, связанные с сервером
   OK: 200,
-  BadRequest: 400,
-  Unauthorized: 401,
-  NotFound: 404
+  BAD_REQUEST: 400,
+  UN_AUTHORIZED: 401,
+  NOT_FOUND: 404
 };
 const TIMEOUT_IN_MS = 10000;
 
@@ -26,13 +26,13 @@ const request = (method, data, url, onLoad, onError) => {
       case StatusCode.OK:
         onLoad(xhr.response); // xhr.response - текст ответа от cервера
         break;
-      case StatusCode.BadRequest:
+      case StatusCode.BAD_REQUEST:
         error = `Неверный запрос`;
         break;
-      case StatusCode.Unauthorized:
+      case StatusCode.UN_AUTHORIZED:
         error = `Пользователь не авторизован`;
         break;
-      case StatusCode.NotFound:
+      case StatusCode.NOT_FOUND:
         error = `Ничего не найдено`;
         break;
       default:
