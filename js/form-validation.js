@@ -4,29 +4,22 @@
 const room = document.querySelector(`#room_number`);
 const capacity = document.querySelector(`#capacity`);
 
-const validateRoomsGuests = () => {
+const onValidateRoomsGuests = () => {
   let roomNumber = +room.value;
   let capacityNumber = +capacity.value;
-  let result = true;
 
-  if ((roomNumber === 1 && capacityNumber !== 1) ||
-    (roomNumber === 2 && (capacityNumber > 2 || capacityNumber === 0)) ||
-    (roomNumber === 3 && capacityNumber < 1) ||
-    (roomNumber > 3 && capacityNumber !== 0)) {
-    capacity.setCustomValidity(window.data.roomValidityMessage[roomNumber]);
-    result = false;
-  } else {
+  const isInvalidOption = window.data.capacityValidityOptions[roomNumber].some((option) => {
+    return Number(capacityNumber) === option;
+  });
+  return !isInvalidOption ?
+    capacity.setCustomValidity(window.data.roomValidityMessage[roomNumber]) :
     capacity.setCustomValidity(``);
-  }
-  capacity.reportValidity();
-
-  return result;
 };
 
-room.addEventListener(`change`, validateRoomsGuests);
-capacity.addEventListener(`change`, validateRoomsGuests);
+room.addEventListener(`change`, onValidateRoomsGuests);
+capacity.addEventListener(`change`, onValidateRoomsGuests);
 window.form.adForm.addEventListener(`submit`, (evt) => {
-  if (!validateRoomsGuests()) {
+  if (!onValidateRoomsGuests()) {
     evt.preventDefault();
   }
 });
@@ -37,7 +30,7 @@ const priceOfHousing = window.form.adForm.querySelector(`input[name="price"]`);
 let result = true;
 
 
-const validateMinPriceOfHousing = (evt) => {
+const onValidateMinPriceOfHousing = (evt) => {
   if (evt) {
     const price = evt.target.value;
     const type = window.data.typesRus[typeOfHousing.value];
@@ -62,13 +55,11 @@ const priceReset = () => {
   priceOfHousing.min = type.minPrice;
 };
 
-// validateMinPriceOfHousing(priceOfHousing.value);
-
-typeOfHousing.addEventListener(`change`, validateMinPriceOfHousing);
-priceOfHousing.addEventListener(`change`, validateMinPriceOfHousing);
+typeOfHousing.addEventListener(`change`, onValidateMinPriceOfHousing);
+priceOfHousing.addEventListener(`change`, onValidateMinPriceOfHousing);
 
 window.form.adForm.addEventListener(`submit`, (evt) => {
-  if (!validateMinPriceOfHousing(evt)) {
+  if (!onValidateMinPriceOfHousing(evt)) {
     evt.preventDefault();
   }
 });
