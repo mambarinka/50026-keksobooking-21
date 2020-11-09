@@ -1,5 +1,8 @@
 'use strict';
 
+const OBJECT_PHOTO_WIDTH = 45;
+const OBJECT_PHOTO_HEIGHT = 40;
+
 //  шаблон карточки объекта
 const cardTemplate = document.querySelector(`#card`)
   .content
@@ -43,8 +46,8 @@ const getPhotos = (template, object) => {
       let popupPhoto = document.createElement(`img`);
       popupPhoto.src = object.offer.photos[i];
       popupPhoto.classList.add(`popup__photo`);
-      popupPhoto.width = 45;
-      popupPhoto.height = 40;
+      popupPhoto.width = OBJECT_PHOTO_WIDTH;
+      popupPhoto.height = OBJECT_PHOTO_HEIGHT;
       popupPhoto.alt = `Фотография жилья`;
       template.querySelector(`.popup__photos`).append(popupPhoto);
     }

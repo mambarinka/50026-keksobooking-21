@@ -7,6 +7,13 @@ const roomValidityMessage = {
   100: `100 комнат — «не для гостей»`
 };
 
+const capacityValidityOptions = {
+  1: [1],
+  2: [1, 2],
+  3: [1, 2, 3],
+  100: [0],
+};
+
 const typesRus = {
   flat: {
     translate: `Квартира`,
@@ -47,6 +54,7 @@ const valuesFilterPrice = {
 
 window.data = {
   roomValidityMessage,
+  capacityValidityOptions,
   typesRus,
   valuesFilterPrice
 };

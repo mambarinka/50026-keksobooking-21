@@ -44,19 +44,20 @@ const activateFilter = () => {
   filterForm.addEventListener(`change`, window.debounce(onFilterChange));
 };
 
+const isFilteredFit = (object) => {
+  return checkfilterItem(filterHousingType, object.offer, `type`) &&
+    checkfilterItem(filterRoomNumber, object.offer, `rooms`) &&
+    checkfilterItem(filterGuestCapacity, object.offer, `guests`) &&
+    checkPrice(object) &&
+    checkFeatures(object);
+};
+
 //  фильтрация объявлений
 const getFilteredObjects = (objects) => {
   let filteredObjects = [];
-  for (let i = 0; i < objects.length; i++) {
-    if (checkfilterItem(filterHousingType, objects[i].offer, `type`) &&
-      checkfilterItem(filterRoomNumber, objects[i].offer, `rooms`) &&
-      checkfilterItem(filterGuestCapacity, objects[i].offer, `guests`) &&
-      checkPrice(objects[i]) &&
-      checkFeatures(objects[i])) {
+  for (let i = 0; i < objects.length && filteredObjects.length < MAX_NUMBER_PIN; i++) {
+    if (isFilteredFit(objects[i])) {
       filteredObjects.push(objects[i]);
-    }
-    if (filteredObjects.length === MAX_NUMBER_PIN) {
-      break;
     }
   }
   return filteredObjects;
