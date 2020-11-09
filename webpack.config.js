@@ -14,6 +14,7 @@ module.exports = {
     `./js/form.js`,
     `./js/form-validation.js`,
     `./js/pin-main.js`,
+    `./js/preview-image.js`,
     `./js/main.js`
   ],
   output: {

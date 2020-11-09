@@ -11,6 +11,7 @@ const deactivateAdForm = () => {
   window.formValidation.priceReset();
   window.util.addDisabledAttribute(adForm, adFormFieldsets);
   window.pinMain.setAddress(window.pinMain.coordsDefault);
+  window.previewImage.disableLoadImg();
   adForm.removeEventListener(`submit`, onSubmitSendForm);
 };
 
@@ -19,6 +20,7 @@ const activateAdForm = () => {
   adForm.classList.remove(`ad-form--disabled`);
   window.util.removeDisabledAttribute(adFormFieldsets);
   window.pinMain.setAddress(window.pinMain.coordsCustom);
+  window.previewImage.activateLoadImg();
   adForm.addEventListener(`submit`, onSubmitSendForm);
 };
 
