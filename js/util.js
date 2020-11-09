@@ -17,19 +17,23 @@ const createErrorMessage = (message) => {
   document.body.insertAdjacentElement(`afterbegin`, node);
 };
 
+const disableElement = (element) => {
+  element.disabled = true;
+};
+
+const enableElement = (element) => {
+  element.disabled = false;
+};
+
 //  функция добавляет атрибут disabled
 const addDisabledAttribute = (form, fields) => {
   form.reset();
-  for (let i = 0; i < fields.length; i++) {
-    fields[i].setAttribute(`disabled`, `disabled`);
-  }
+  fields.forEach(disableElement);
 };
 
 //  функция удаляет атрибут disabled
 const removeDisabledAttribute = (fields) => {
-  for (let i = 0; i < fields.length; i++) {
-    fields[i].removeAttribute(`disabled`);
-  }
+  fields.forEach(enableElement);
 };
 
 window.util = {
