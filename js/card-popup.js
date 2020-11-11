@@ -24,6 +24,7 @@ const openPopup = (object) => {
 //  закрытие попапа (карточки объявления)
 const closePopup = () => {
   deletePopup();
+  window.pins.deleteActiveClassPin();
   popupClose.removeEventListener(`click`, onPopupCloseEnter);
   popupClose.removeEventListener(`keydown`, onPopupEnterPress);
   document.removeEventListener(`keydown`, onPopupEscPress);
