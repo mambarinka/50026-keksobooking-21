@@ -44,23 +44,18 @@ const activateFilter = () => {
   filterForm.addEventListener(`change`, window.debounce(onFilterChange));
 };
 
-const isFilteredFit = (object) => {
-  return checkfilterItem(filterHousingType, object.offer, `type`) &&
-    checkfilterItem(filterRoomNumber, object.offer, `rooms`) &&
-    checkfilterItem(filterGuestCapacity, object.offer, `guests`) &&
-    checkPrice(object) &&
-    checkFeatures(object);
-};
-
-//  фильтрация объявлений
 const getFilteredObjects = (objects) => {
-  let filteredObjects = [];
-  for (let i = 0; i < objects.length && filteredObjects.length < MAX_NUMBER_PIN; i++) {
-    if (isFilteredFit(objects[i])) {
-      filteredObjects.push(objects[i]);
-    }
-  }
-  return filteredObjects;
+  return objects
+    .filter((object) => {
+      return (
+        checkfilterItem(filterHousingType, object.offer, `type`) &&
+        checkfilterItem(filterRoomNumber, object.offer, `rooms`) &&
+        checkfilterItem(filterGuestCapacity, object.offer, `guests`) &&
+        checkPrice(object) &&
+        checkFeatures(object)
+      );
+    })
+    .slice(0, MAX_NUMBER_PIN);
 };
 
 // функция выбора фильтров (типа жилья, комнат, гостей)
